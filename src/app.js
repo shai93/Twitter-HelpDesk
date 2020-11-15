@@ -8,11 +8,14 @@ const passport = require('passport');
 const httpStatus = require('http-status');
 const config = require('./config/config');
 const morgan = require('./config/morgan');
-const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const { twitterStrategy } = require('./config/passport');
+const cookieSession = require("cookie-session");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -41,9 +44,21 @@ app.use(compression());
 app.use(cors());
 app.options('*', cors());
 
-// jwt authentication
+app.use(
+  cookieSession({
+    name: "session",
+    keys: [config.cookieKey],
+    maxAge: 24 * 60 * 60 * 100
+  })
+);
+
+// parse cookies
+app.use(cookieParser());
+
 app.use(passport.initialize());
-passport.use('jwt', jwtStrategy);
+passport.use('twitter', twitterStrategy);
+// deserialize cookie from the browser
+app.use(passport.session());
 
 // limit repeated failed requests to auth endpoints
 if (config.env === 'production') {

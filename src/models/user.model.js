@@ -2,18 +2,23 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
-const { roles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
-      required: true,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      trim: true,
+    },
+    phoneNumber: {
+      type: String,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
       unique: true,
       trim: true,
       lowercase: true,
@@ -23,23 +28,9 @@ const userSchema = mongoose.Schema(
         }
       },
     },
-    password: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 8,
-      validate(value) {
-        if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-          throw new Error('Password must contain at least one letter and one number');
-        }
-      },
-      private: true, // used by the toJSON plugin
-    },
-    role: {
-      type: String,
-      enum: roles,
-      default: 'user',
-    },
+    facebook: {
+      type: mongoose.Schema.Types.Mixed,
+    }
   },
   {
     timestamps: true,
@@ -68,7 +59,7 @@ userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
  */
 userSchema.methods.isPasswordMatch = async function (password) {
   const user = this;
-  return bcrypt.compare(password, user.password);
+  return bcrypt.compare(password, user.password || '');
 };
 
 userSchema.pre('save', async function (next) {
