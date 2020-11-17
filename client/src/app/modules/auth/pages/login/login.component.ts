@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/shared/services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private apiService: ApiService) {
   }
+
+  ngOnInit(): void { }
+
+  redirectToTwitter() {
+    this.apiService.getRedirectUrl().subscribe((res: any) => {
+      location.href = res.redirectUrl;
+    })
+  }
+
 
 }

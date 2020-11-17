@@ -1,0 +1,214 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  .img1 {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+  }
+  
+  body {
+    margin: 0;
+  }
+  
+  .head {
+    font-size: larger;
+    font-weight: bolder;
+    margin-left: 5%;
+    text-align: left;
+    padding: 5px;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 5%;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color on hover */
+  li a:hover {
+    background-color: #555;
+    color: white;
+  }
+  /* Style the header */
+  .header {
+    background-color: white;
+    padding: 15px;
+    /* text-align: center; */
+  }
+  
+  /* Create three unequal columns that floats next to each other */
+  .column {
+    float: left;
+    padding: 10px;
+  }
+  
+  /* Left and right column */
+  .column.side1 {
+    width: 15%;
+    margin: 5%;
+    border-right: 1px solid black;
+  }
+  .column.side2 {
+    width: 30%;
+   
+  }
+  /* Middle column */
+  .column.middle {
+    width: 42%;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    border: 1px solid black;
+  }
+  
+  /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .column.side,
+    .column.middle {
+      width: 100%;
+    }
+  }
+  .card {
+    padding: 5px;
+    margin: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 100px;
+    height: 100px;
+    text-align: center;
+  }
+  /* Style the footer */
+  .footer {
+    background-color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  i.small.material-icons{
+  /* padding-top:2px ; */
+  position: absolute;
+  padding: 0px 8px;
+  left: 0;
+  
+  }
+  
+  th,tr,td{
+     
+      padding: 15px 14px;
+      margin: 4px;
+      width: 70px;
+  }
+  
+  .search{
+    position: relative; ;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    letter-spacing: 0.5px;
+    color: black;
+    background-color: #f5f5f5;
+    width: 20%;
+    border-radius: 50px;
+    line-height: 25px;
+    padding: 0 5px;
+    border: none;
+  
+    }
+  
+    .searchicon{
+      position: absolute;
+  padding: 0px 8px;
+  left: 20%;
+  
+    }
+  
+  .inputWithIcon {
+    position: relative;
+  }
+  
+  .btn {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    letter-spacing: 0.5px;
+    color: black;
+    background-color: #f5f5f5;
+    width: 120px;
+    border-radius: 50px;
+    line-height: 25px;
+    padding: 0 10px;
+  }
+  
+  .sidebar {
+    margin-top: 4%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: White;
+    overflow-x: hidden;
+    padding-top: 16px;
+    border-left: 1px solid black;
+    
+  }
+  /* 
+  .sidebar a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 2    0px;
+  color: #818181;
+  display: block;
+  } */
+  
+  /* .sidebar a:hover {
+  color: #f1f1f1;
+  } */
+  
+  .dropbtn {
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }

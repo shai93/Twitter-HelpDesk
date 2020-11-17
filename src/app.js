@@ -3,7 +3,6 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
-const cors = require('cors');
 const passport = require('passport');
 const httpStatus = require('http-status');
 const config = require('./config/config');
@@ -14,10 +13,9 @@ const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const { twitterStrategy } = require('./config/passport');
 const cookieSession = require("cookie-session");
-const session = require("express-session");
 const cookieParser = require("cookie-parser");
-
 const app = express();
+
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -41,8 +39,23 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // enable cors
-app.use(cors());
-app.options('*', cors());
+app.use((req, res, next) => {
+  const allowedOrigins = ['http://127.0.0.1:3000'];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', true);
+  return next();
+});
+// parse cookies
+app.use(cookieParser());
+
+app.use(passport.initialize());
+// deserialize cookie from the browser
+app.use(passport.session());
 
 app.use(
   cookieSession({
@@ -50,33 +63,30 @@ app.use(
     keys: [config.cookieKey],
     maxAge: 24 * 60 * 60 * 100
   })
-);
-
-// parse cookies
-app.use(cookieParser());
-
-app.use(passport.initialize());
-passport.use('twitter', twitterStrategy);
-// deserialize cookie from the browser
-app.use(passport.session());
-
-// limit repeated failed requests to auth endpoints
-if (config.env === 'production') {
-  app.use('/v1/auth', authLimiter);
-}
-
-// v1 api routes
-app.use('/v1', routes);
-
-// send back a 404 error for any unknown api request
-app.use((req, res, next) => {
-  next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
-});
-
-// convert error to ApiError, if needed
-app.use(errorConverter);
-
-// handle error
-app.use(errorHandler);
-
-module.exports = app;
+  );
+  
+  passport.use('twitter', twitterStrategy);
+  
+  // limit repeated failed requests to auth endpoints
+  if (config.env === 'production') {
+    app.use('/v1/auth', authLimiter);
+  }
+  
+  // v1 api routes
+  app.use('/v1', routes);
+  
+  
+  // send back a 404 error for any unknown api request
+  app.use((req, res, next) => {
+    next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
+  });
+  
+  // convert error to ApiError, if needed
+  app.use(errorConverter);
+  
+  // handle error
+  app.use(errorHandler);
+  
+  var server = require('http').createServer(app);
+  module.exports = server;
+  

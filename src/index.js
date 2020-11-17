@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
-const app = require('./app');
+const server = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
+const SocketIO = require("socket.io")(server);
+const twitterService = require("./services/twitterservice")
 
-let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
-  server = app.listen(config.port, () => {
+  server.listen(config.port, () => {
     logger.info(`Listening to port ${config.port}`);
   });
+  twitterService(SocketIO);
 });
 
 const exitHandler = () => {
