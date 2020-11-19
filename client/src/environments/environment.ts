@@ -5,6 +5,8 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://127.0.0.1:3002',
+  loginUrl:'http://127.0.0.1:3002/v1/auth/twitter',
+  logoutUrl:'http://127.0.0.1:3002/v1/auth/logout',
   socketUrl:'http://127.0.0.1:3002'
 };
 
