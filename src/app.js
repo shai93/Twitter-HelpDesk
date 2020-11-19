@@ -81,7 +81,7 @@ app.use(express.static(__dirname + '/public'));
 // Send all requests to index.html
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname + '/public/index.html'));
-});
+})
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
