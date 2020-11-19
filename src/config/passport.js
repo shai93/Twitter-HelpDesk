@@ -19,7 +19,6 @@ const twitterVerify = (token, refreshToken, profile, done) => {
     User.findOne({ 'twitterId': profile._json.id_str }, function (err, user) {
       // if there is an error, stop everything and return that
       // ie an error connecting to the database
-      console.log('user ', user)
       if (err) return done(err);
 
       // if the user is found, then log them in

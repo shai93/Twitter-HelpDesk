@@ -65,28 +65,28 @@ app.use(
   })
   );
   
-  passport.use('twitter', twitterStrategy);
-  
-  // limit repeated failed requests to auth endpoints
-  if (config.env === 'production') {
-    app.use('/v1/auth', authLimiter);
-  }
-  
-  // v1 api routes
-  app.use('/v1', routes);
-  
-  
-  // send back a 404 error for any unknown api request
-  app.use((req, res, next) => {
-    next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
-  });
-  
-  // convert error to ApiError, if needed
-  app.use(errorConverter);
-  
-  // handle error
-  app.use(errorHandler);
-  
-  var server = require('http').createServer(app);
-  module.exports = server;
+passport.use('twitter', twitterStrategy);
+
+// limit repeated failed requests to auth endpoints
+if (config.env === 'production') {
+  app.use('/v1/auth', authLimiter);
+}
+
+// v1 api routes
+app.use('/v1', routes);
+
+
+// send back a 404 error for any unknown api request
+app.use((req, res, next) => {
+  next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
+});
+
+// convert error to ApiError, if needed
+app.use(errorConverter);
+
+// handle error
+app.use(errorHandler);
+
+var server = require('http').createServer(app);
+module.exports = server;
   

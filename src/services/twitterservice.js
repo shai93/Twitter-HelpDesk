@@ -1,11 +1,14 @@
-const Twit = require("twit");
 const config = require("../config/config");
 const { Autohook } = require('twitter-autohook');
-const util = require('util');
-const request = require('request');
 const Tweets = require('../models/tweets.model');
+var twitterAPI = require('node-twitter-api');
+var cookie = require("cookie");
 
-const post = util.promisify(request.post);
+var twitter = new twitterAPI({
+    consumerKey: config.twitterapi.apiKey,
+    consumerSecret: config.twitterapi.apiSecret,
+    callback: config.twitterapi.callbackUrl
+});
 
 module.exports = (io) => {
     const autoHook = async () => {
@@ -23,7 +26,6 @@ module.exports = (io) => {
                 // Don't worry, we'll start adding something more meaningful
                 // in just a moment.
                 if (event.tweet_create_events) {
-                    console.log('tweet ', event)
                     //save incoming tweets
                     const newTweet = new Tweets();
                     newTweet.tweetUserId = event.tweet_create_events[0].user.id;
@@ -54,9 +56,36 @@ module.exports = (io) => {
     }
     autoHook();
 
-    io.on("connection", socket => {
-        console.log('connection')
+    io.on("connection", client => {
+        console.log('connection');
+        const keys = cookie.parse(client.request.headers.cookie);
+        let clientSecret = {
+            oauthAccessToken:"",
+            oauthAccessTokenSecret:""
+        }
+        if(keys.session){
+            let buff = new Buffer(keys.session, 'base64');
+            let text = buff.toString('ascii');
+            clientSecret = JSON.parse(text);
+        }
+        client.on("quoteTweet", msg=>{
+            twitter.statuses("update",
+                { in_reply_to_status_id: 1329007138648146000, status: msg },
+                clientSecret.oauthAccessToken,
+                clientSecret.oauthAccessTokenSecret,
+                function(error, data, response) {
+                    if (error) {
+                        // something went wrong
+                    } else {
+                        console.log("Updated")
+                        // data contains the data sent by twitter
+                    }
+                }
+            );
+        })
     });
+
+    
 
     const getAllTweets = async (tweetUserId) => {
         const allTweets = await Tweets.find({ tweetUserId }).sort('-createdAt');
