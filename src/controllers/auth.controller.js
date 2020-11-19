@@ -3,6 +3,8 @@ const config = require('../config/config');
 const { User } = require('../models');
 var twitterAPI = require('node-twitter-api');
 
+
+
 var twitter = new twitterAPI({
     consumerKey: config.twitterapi.apiKey,
     consumerSecret: config.twitterapi.apiSecret,
@@ -18,7 +20,7 @@ const logout = catchAsync(async (req, res) => {
 const connect = catchAsync(async (req, res) => {
     twitter.getRequestToken(function (error, requestToken, requestTokenSecret, results) {
         if (error) {
-            console.log("Error getting OAuth request token : " + error);
+            console.log("Error getting OAuth request token : " + error.message);
         } else {
             req.session.oauthRequestToken = requestToken;
             req.session.oauthRequestTokenSecret = requestTokenSecret;

@@ -15,8 +15,7 @@ router.get('/saveAccessTokens', authController.saveAccessTokens)
 router.get(
   '/twitter/callback',
   passport.authenticate('twitter',{
-    successRedirect: config.clientHomeUrl,
-    failureRedirect: "/auth/login/failed"
+    successRedirect: config.clientHomeUrl
   })
 );
 

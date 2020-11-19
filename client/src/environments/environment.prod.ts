@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://richpanel-twitter-helpdesk.herokuapp.com',
-  socketUrl:'https://richpanel-twitter-helpdesk.herokuapp.com'
+  apiBaseUrl: 'http://127.0.0.1:3002/v1',
+  socketUrl:'http://127.0.0.1:3002/v1'
 };

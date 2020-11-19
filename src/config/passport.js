@@ -7,8 +7,7 @@ const passport = require('passport');
 
 const twitterOptions = {
   consumerKey: config.twitterapi.apiKey,
-  consumerSecret: config.twitterapi.apiSecret,
-  callbackURL: "/v1/auth/twitter/callback"
+  consumerSecret: config.twitterapi.apiSecret
 };
 
 

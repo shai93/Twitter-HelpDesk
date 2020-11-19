@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { SocketioService } from 'src/app/shared/services/socketio.service';
-import { environment } from '../../../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

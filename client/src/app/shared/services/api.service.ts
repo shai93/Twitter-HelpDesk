@@ -9,11 +9,12 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   getRedirectUrl() {
-    return this.http.get(`${environment.apiBaseUrl}/v1/auth/connect`)
+    console.log('url ', `${environment.apiBaseUrl}/auth/connect`)
+    return this.http.get(`${environment.apiBaseUrl}/auth/connect`)
   }
 
   saveAccessToken(oauthToken: string, oauthVerifier: string) {
-    return this.http.get(`${environment.apiBaseUrl}/v1/auth/saveAccessTokens?oauth_token=${oauthToken}&oauth_verifier=${oauthVerifier}`)
+    return this.http.get(`${environment.apiBaseUrl}/auth/saveAccessTokens?oauth_token=${oauthToken}&oauth_verifier=${oauthVerifier}`)
   }
 
 }

@@ -15,7 +15,7 @@ const { twitterStrategy } = require('./config/passport');
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
 const app = express();
-
+const path = require('path');
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -75,13 +75,20 @@ if (config.env === 'production') {
 // v1 api routes
 app.use('/v1', routes);
 
-// Serve static files....
-app.use(express.static(__dirname + '/public'));
 
-// Send all requests to index.html
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/public/index.html'));
-})
+app.use("/", express.static(path.join(__dirname, "../client/dist/client")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client/dist/client", "index.html"));
+  });
+
+
+// // Serve static files....
+// app.use(express.static(__dirname + '../public'));
+
+// // Send all requests to index.html
+// app.get('/*', function(req, res) {
+//   res.sendFile(path.join(__dirname + '../public/index.html'));
+// })
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
