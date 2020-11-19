@@ -9,11 +9,6 @@ var twitter = new twitterAPI({
     callback: config.twitterapi.callbackUrl
 });
 
-const logout = catchAsync(async (req, res) => {
-    req.logout();
-    res.redirect(config.clientRedirectUrl);
-});
-
 
 const connect = catchAsync(async (req, res) => {
     twitter.getRequestToken(function (error, requestToken, requestTokenSecret, results) {
@@ -66,7 +61,6 @@ const saveAccessTokens = catchAsync(async (req, res) => {
 })
 
 module.exports = {
-    logout,
     connect,
     saveAccessTokens
 };
