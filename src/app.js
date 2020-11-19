@@ -75,6 +75,13 @@ if (config.env === 'production') {
 // v1 api routes
 app.use('/v1', routes);
 
+// Serve static files....
+app.use(express.static(__dirname + '/public'));
+
+// Send all requests to index.html
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/index.html'));
+});
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
@@ -86,6 +93,7 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
+
 
 var server = require('http').createServer(app);
 module.exports = server;

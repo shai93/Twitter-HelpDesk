@@ -11,7 +11,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AgentComponent implements OnInit {
   showLogout: boolean = false;
-  logoutUrl: string = environment.logoutUrl;
   tweets:any;
   loginUser: any={
     screen_name:'',
